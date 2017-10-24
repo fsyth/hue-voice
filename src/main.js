@@ -1,20 +1,21 @@
 /*global Hue, HueCommand*/
 
+// Must provide your own Hue parameters here
 const hue = new Hue({ id: '4vy12cW4AIfRfeTgm8Gr6TBOhY1oVsNBoAW4aMnO' })
 let roomNo = '1'
 
+// Just use the preset commands, but you could add your own
 const hueCommands = HueCommand.presets
 
+// SpeechRecognition API is new so has vendor prefixes currently and may not be supported
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
-const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
 
 if (!SpeechRecognition)
   alert('Your browser does not support the Web Speech API. Please try again using an up to date version of Chrome.')
 
 const speechRec = new SpeechRecognition()
 speechRec.lang = navigator.language || 'en-US'
-//speechRec.continuous = true
+speechRec.continuous = false
 speechRec.interimResults = false
 
 speechRec.onresult = function(e) {
@@ -34,9 +35,4 @@ speechRec.onend = function() {
   speechRec.start()
 }
 
-/*
-document.body.onclick = function () {
-  speechRec.start()
-}
-*/
 speechRec.start()
