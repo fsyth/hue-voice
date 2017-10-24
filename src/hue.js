@@ -148,7 +148,7 @@ class Hue {
   /**
    * Callback when an error occurs during an XMLHttpRequest
    * @callback errorCallback
-   * @param    {errorData[]} error
+   * @param    {errorData[]} errors
    *           An array of objects containing error information
    */
 
@@ -237,6 +237,8 @@ class Hue {
 
     if (typeof callback === 'function')
       callback(this.id)
+
+    throw 'createId_NotYetImplemented'
   }
 
 
@@ -347,7 +349,7 @@ class Hue {
 
   /**
    * Gets the current state of a given light
-   * @param {string|number}        lightNo
+   * @param {string|number} lightNo
    *        Light number identifier
    * @param {lightCallback} callback
    *        A callback to receive an object with data for the light
@@ -388,7 +390,7 @@ class Hue {
 
   /**
    * @callback successCallback
-   * @param    {successData[]} data
+   * @param    {successData[]} successes
    *           An array of objects with data on the changes made to the
    *           room/light
    */
