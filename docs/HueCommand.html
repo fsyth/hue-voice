@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: HueCommand</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: HueCommand</h1>
+
+
+
+
+
+
+<section>
+
+<header>
+
+        <h2><span class="attribs"><span class="type-signature"></span></span>HueCommand<span class="signature">(commandPattern, hueState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+
+            <div class="class-description">HueCommand
+Class for interpreting voice commands as Hue states and relaying this to the
+Hue Bridge.
+© James Forsyth, 2017</div>
+
+
+</header>
+
+<article>
+    <div class="container-overview">
+
+
+
+
+    <h2>Constructor</h2>
+
+
+
+    <h4 class="name" id="HueCommand"><span class="type-signature"></span>new HueCommand<span class="signature">(commandPattern, hueState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+
+
+
+
+
+<div class="description">
+    Commands are created from a regular expression pattern to test strings
+against. If an input string matches the pattern, the command will be
+executed.
+
+The commands will output a hue state based on the command. The hue state
+to be output might depend on numbers in the command. In this case, the hue
+state should contain the string '$1' where the number corresponds with a
+capture group in the commandPattern regular expression.
+
+If the number needs to be manipulated before it is replaced in the
+hueState, a mapping function can be used to map from the number in the
+command to the number in the hueState.
+e.g. mapping = n => n * 255 / 100 | 0
+would convert a percentage to a byte range before it is used in the
+hueState
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+
+
+<table class="params">
+    <thead>
+    <tr>
+
+        <th>Name</th>
+
+
+        <th>Type</th>
+
+
+        <th>Attributes</th>
+
+
+
+        <th>Default</th>
+
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+
+        <tr>
+
+                <td class="name"><code>commandPattern</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type">RegExp</span>
+
+
+
+            </td>
+
+
+                <td class="attributes">
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                </td>
+
+
+            <td class="description last">A pattern that describes the command to be matched</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>hueState</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type"><a href="global.html#lightState">lightState</a></span>
+
+
+
+            </td>
+
+
+                <td class="attributes">
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                </td>
+
+
+            <td class="description last">The state to be sent to the Hue Bridge</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>mapping</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type">function</span>
+
+
+
+            </td>
+
+
+                <td class="attributes">
+
+                    &lt;optional><br>
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                    n => n
+
+                </td>
+
+
+            <td class="description last">A function that maps a capture group from the command onto another
+       value to be used in the hueState</td>
+        </tr>
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line7">line 7</a>
+    </li></ul></dd>
+
+
+
+
+
+
+
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h3 class="subsection-title">Members</h3>
+
+
+
+<h4 class="name" id=".presets"><span class="type-signature">(static) </span>presets<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Returns an array of useful preset commands for setting brightness,
+saturation, hue, colour temperature and on/off.
+The commands all begin with 'light' or 'lights' to distinguish them from
+regular speaking.
+All of the command patterns use an end of string anchor so that only the
+most recent command in a string will be run.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line91">line 91</a>
+    </li></ul></dd>
+
+
+
+
+
+
+
+</dl>
+
+
+
+
+
+
+
+
+<h4 class="name" id=".presetsGrammar"><span class="type-signature">(static) </span>presetsGrammar<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Returns a list of all the keywords used in the preset commands.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line125">line 125</a>
+    </li></ul></dd>
+
+
+
+
+
+
+
+</dl>
+
+
+
+
+
+
+
+
+
+
+        <h3 class="subsection-title">Methods</h3>
+
+
+
+
+
+
+
+    <h4 class="name" id="matchAndRun"><span class="type-signature"></span>matchAndRun<span class="signature">(str, hue, roomNo, callback, errorCallback)</span><span class="type-signature"> &rarr; (nullable) {string}</span></h4>
+
+
+
+
+
+
+<div class="description">
+    Checks an input string against this command's commandPattern.
+If it matches, a new Hue State will be sent to the Hue Bridge and room
+specified
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+
+
+<table class="params">
+    <thead>
+    <tr>
+
+        <th>Name</th>
+
+
+        <th>Type</th>
+
+
+
+
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+
+        <tr>
+
+                <td class="name"><code>str</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type">string</span>
+
+
+
+            </td>
+
+
+
+
+
+            <td class="description last">Input string to be scanned for this command</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>hue</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type"><a href="Hue.html">Hue</a></span>
+
+
+
+            </td>
+
+
+
+
+
+            <td class="description last">An instance of the Hue class to be controlled</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>roomNo</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+
+            </td>
+
+
+
+
+
+            <td class="description last">Room identifier number</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>callback</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type"><a href="global.html#successCallback">successCallback</a></span>
+
+
+
+            </td>
+
+
+
+
+
+            <td class="description last">Callback run after the Hue lights are successfully set</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>errorCallback</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type"><a href="global.html#errorCallback">errorCallback</a></span>
+
+
+
+            </td>
+
+
+
+
+
+            <td class="description last">Callback to handle errors when communicating with Hue</td>
+        </tr>
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line62">line 62</a>
+    </li></ul></dd>
+
+
+
+
+
+
+
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+
+<div class="param-desc">
+    Returns the string of JSON formatted data sent to control the
+         Hue Bridge, or null if the command pattern did not match.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Hue.html">Hue</a></li><li><a href="HueCommand.html">HueCommand</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 24 2017 00:41:40 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

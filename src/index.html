@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hue Speech</title>
+    <style>body { font-family: sans-serif }</style>
+  </head>
+  <body>
+    <h1>Hue Voice Control</h1>
+    <p>Try saying the following:</p>
+    <ul>
+      <li>lights 50%</li>
+      <li>lights minimum / maximum</li>
+      <li>lights saturation 75%</li>
+      <li>lights 120 degrees</li>
+      <li>lights temperature 500</li>
+      <li>lights 4000 Kelvin</li>
+      <li>lights red / orange / yellow / green / blue / cyan / purple / magenta / white</li>
+      <li>lights off</li>
+      <li>lights on</li>
+    </ul>
+    <p>Recognised speech: <span id="speech">...</span></p>
+    <script src="hue.js"></script>
+    <script src="hue-command.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
