@@ -119,6 +119,19 @@ class Hue {
 
 
   /**
+   * Removes anything set up by the constructor, allowing setup to be called
+   * again starting from scratch.
+   */
+  reset() {
+    this.ip = null
+    this.id = null
+    this.lights = null
+    this.rooms = null
+    this.network = null
+  }
+
+
+  /**
    * Takes the ProgressEvent of an XMLHttpRequest response handler and parses
    * the response text into an object
    * @param   {ProgressEvent}
