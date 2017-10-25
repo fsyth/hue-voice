@@ -42,15 +42,20 @@ devIdInput.onchange = e => {
 
 
 
-// HueCommand class for interpreting plain english commands as Hue states.
+// HueCommand class for interpreting plain english commands as light states.
 // Using the preset commands here, but you could add your own.
 const hueCommands = HueCommand.presets
+
+// Callback for what to do with a commanded Light State when a command matches.
+function setLightState(lightState) {
+  hue.setRoom(roomNo, lightState, onSuccess, onError)
+}
 
 // Allow commands to be typed instead of spoken if desired using a text input.
 const typingInput = document.getElementById('typing')
 typingInput.onchange = e => {
   for (let command of hueCommands)
-    command.matchAndRun(typingInput.value, hue, roomNo, onSuccess, onError)
+    command.matchAndRun(typingInput.value, setLightState)
 
   typingInput.value = ''
 }
@@ -79,7 +84,7 @@ speechRec.onresult = e => {
   document.getElementById('speech').innerText = speech
 
   for (let command of hueCommands)
-    command.matchAndRun(speech, hue, roomNo, onSuccess, onError)
+    command.matchAndRun(speech, setLightState)
 }
 
 // Stop when speech ends to clear old transcript

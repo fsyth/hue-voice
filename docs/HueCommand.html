@@ -28,9 +28,9 @@
 
 <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>HueCommand<span class="signature">(commandPattern, hueState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>HueCommand<span class="signature">(commandPattern, lightState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
 
-            <div class="class-description">HueCommandClass for interpreting voice commands as Hue states and relaying this to theHue Bridge.© James Forsyth, 2017</div>
+            <div class="class-description">HueCommandClass for interpreting voice commands as light states and relaying this to theHue Bridge. <br>© James Forsyth, 2017</div>
 
 
 </header>
@@ -45,7 +45,7 @@
 
 
 
-    <h4 class="name" id="HueCommand"><span class="type-signature"></span>new HueCommand<span class="signature">(commandPattern, hueState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="HueCommand"><span class="type-signature"></span>new HueCommand<span class="signature">(commandPattern, lightState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
 
@@ -53,7 +53,7 @@
 
 
 <div class="description">
-    Commands are created from a regular expression pattern to test stringsagainst. If an input string matches the pattern, the command will beexecuted.The commands will output a hue state based on the command. The hue stateto be output might depend on numbers in the command. In this case, the huestate should contain the string '$1' where the number corresponds with acapture group in the commandPattern regular expression.If the number needs to be manipulated before it is replaced in thehueState, a mapping function can be used to map from the number in thecommand to the number in the hueState.e.g. mapping = n => n * 255 / 100 | 0would convert a percentage to a byte range before it is used in thehueState
+    Commands are created from a regular expression pattern to test stringsagainst. If an input string matches the pattern, the command will beexecuted. <br><br>The commands will output a light state based on the command. The hue stateto be output might depend on numbers in the command. In this case, thelight state should contain the string '$1' where the number correspondswith a capture group in the commandPattern regular expression. <br><br>If the number needs to be manipulated before it is replaced in thelightState, a mapping function can be used to map from the number in thecommand to the number in the lightState. <br>e.g. mapping = n => n * 255 / 100 | 0 <br>would convert a percentage to a byte range before it is used in thelightState
 </div>
 
 
@@ -121,14 +121,14 @@
                 </td>
 
 
-            <td class="description last">A pattern that describes the command to be matched</td>
+            <td class="description last">A pattern that describes the command to be matched.</td>
         </tr>
 
 
 
         <tr>
 
-                <td class="name"><code>hueState</code></td>
+                <td class="name"><code>lightState</code></td>
 
 
             <td class="type">
@@ -156,7 +156,7 @@
                 </td>
 
 
-            <td class="description last">The state to be sent to the Hue Bridge</td>
+            <td class="description last">The light state to be sent to the Hue Bridge, with the string '$1'       replacing any numbers in the light state that require mapping.</td>
         </tr>
 
 
@@ -195,7 +195,7 @@
                 </td>
 
 
-            <td class="description last">A function that maps a capture group from the command onto another       value to be used in the hueState</td>
+            <td class="description last">A function that maps a capture group from the command pattern onto       a numerical value to be used in the lightState. Note, Hue       requires integer values, so be careful with division.</td>
         </tr>
 
 
@@ -236,7 +236,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line7">line 7</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line14">line 14</a>
     </li></ul></dd>
 
 
@@ -261,6 +261,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+
+    <pre class="prettyprint"><code>Example that maps percentage brightness to a byte value:new HueCommand(  /lights? (\d+)%$/i,        // Match 'lights 50%', etc.  { bri:  '$1' },            // Output light state with '$1' placeholder.  n => n * 255 / 100 | 0     // Scale from 0:100 to 0:255, rounding down.)</code></pre>
 
 
 
@@ -328,7 +333,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line91">line 91</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line113">line 113</a>
     </li></ul></dd>
 
 
@@ -390,7 +395,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line125">line 125</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line147">line 147</a>
     </li></ul></dd>
 
 
@@ -418,7 +423,7 @@
 
 
 
-    <h4 class="name" id="matchAndRun"><span class="type-signature"></span>matchAndRun<span class="signature">(str, hue, roomNo, callback, errorCallback)</span><span class="type-signature"> &rarr; (nullable) {string}</span></h4>
+    <h4 class="name" id="matchAndRun"><span class="type-signature"></span>matchAndRun<span class="signature">(str, callback)</span><span class="type-signature"> &rarr; (nullable) {string}</span></h4>
 
 
 
@@ -426,7 +431,7 @@
 
 
 <div class="description">
-    Checks an input string against this command's commandPattern.If it matches, a new Hue State will be sent to the Hue Bridge and roomspecified
+    Checks an input string against this command's commandPattern.If it matches, a new light state will be sent to the Hue Bridge and roomspecified
 </div>
 
 
@@ -485,62 +490,13 @@
 
         <tr>
 
-                <td class="name"><code>hue</code></td>
-
-
-            <td class="type">
-
-
-<span class="param-type"><a href="Hue.html">Hue</a></span>
-
-
-
-            </td>
-
-
-
-
-
-            <td class="description last">An instance of the Hue class to be controlled</td>
-        </tr>
-
-
-
-        <tr>
-
-                <td class="name"><code>roomNo</code></td>
-
-
-            <td class="type">
-
-
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-
-
-
-            </td>
-
-
-
-
-
-            <td class="description last">Room identifier number</td>
-        </tr>
-
-
-
-        <tr>
-
                 <td class="name"><code>callback</code></td>
 
 
             <td class="type">
 
 
-<span class="param-type"><a href="global.html#successCallback">successCallback</a></span>
+<span class="param-type"><a href="global.html#commandMatchCallback">commandMatchCallback</a></span>
 
 
 
@@ -550,30 +506,7 @@
 
 
 
-            <td class="description last">Callback run after the Hue lights are successfully set</td>
-        </tr>
-
-
-
-        <tr>
-
-                <td class="name"><code>errorCallback</code></td>
-
-
-            <td class="type">
-
-
-<span class="param-type"><a href="global.html#errorCallback">errorCallback</a></span>
-
-
-
-            </td>
-
-
-
-
-
-            <td class="description last">Callback to handle errors when communicating with Hue</td>
+            <td class="description last">Callback run when the input string matches the command pattern         with the output light state as an argument.</td>
         </tr>
 
 
@@ -614,7 +547,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line62">line 62</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line83">line 83</a>
     </li></ul></dd>
 
 
@@ -641,7 +574,7 @@
 
 
 <div class="param-desc">
-    Returns the string of JSON formatted data sent to control the         Hue Bridge, or null if the command pattern did not match.
+    Returns the light state string the command should output, or null         if the command pattern did not match.
 </div>
 
 
@@ -661,6 +594,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+
+    <pre class="prettyprint"><code>let hue = new Hue( ... )                        // Hue interface classlet hueCommand = new HueCommand( ... )          // Constructed HueCommandlet commandTextFromUser = 'lights 50%'          // Some input to be testedhueCommand.matchAndRun(commandTextFromUser, lightState => {  hue.setAllLights(lightState)})</code></pre>
 
 
 
@@ -686,7 +624,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 25 2017 20:28:46 GMT+0100 (GMT Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 25 2017 23:38:01 GMT+0100 (GMT Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

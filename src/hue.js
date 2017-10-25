@@ -2,7 +2,7 @@
 
 /**
  * @class Hue
- * Class for interfacing with Philips Hue Lights.
+ * Class for interfacing with Philips Hue Lights. <br>
  * © James Forsyth, 2017
  */
 class Hue {
@@ -78,8 +78,8 @@ class Hue {
   /**
    * Queues up tasks to find missing parameters. This automatically handles the
    * order of the sequence, which is important since you need IP to get ID to
-   * get All.
-   * If any of these are already known, these stages are skipped.
+   * get All. <br>
+   * If any of these are already known, these stages are skipped. <br>
    * Finally, calls the callback (if any) that was passed in once everything
    * is set up.
    * @param {hueCallback} [callback]
@@ -168,7 +168,7 @@ class Hue {
   /**
    * Checks the parsed data or ProgressEvent from an XMLHttpRequest.
    * If the data describes an error response, it is logged to the console and
-   * the errorCallback is called.
+   * the errorCallback is called. <br>
    * Returns true if an error was detected so that calling functions can be
    * stopped early.
    * @param   {object} data

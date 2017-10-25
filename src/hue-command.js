@@ -1,79 +1,101 @@
 /**
  * @class HueCommand
- * Class for interpreting voice commands as Hue states and relaying this to the
- * Hue Bridge.
+ * Class for interpreting voice commands as light states and relaying this to the
+ * Hue Bridge. <br>
  * © James Forsyth, 2017
+ *
+ * @example Example that maps percentage brightness to a byte value:
+ * new HueCommand(
+ *   /lights? (\d+)%$/i,        // Match 'lights 50%', etc.
+ *   { bri:  '$1' },            // Output light state with '$1' placeholder.
+ *   n => n * 255 / 100 | 0     // Scale from 0:100 to 0:255, rounding down.
+ * )
  */
 class HueCommand {
   /**
    * Commands are created from a regular expression pattern to test strings
    * against. If an input string matches the pattern, the command will be
-   * executed.
+   * executed. <br><br>
    *
-   * The commands will output a hue state based on the command. The hue state
-   * to be output might depend on numbers in the command. In this case, the hue
-   * state should contain the string '$1' where the number corresponds with a
-   * capture group in the commandPattern regular expression.
+   * The commands will output a light state based on the command. The hue state
+   * to be output might depend on numbers in the command. In this case, the
+   * light state should contain the string '$1' where the number corresponds
+   * with a capture group in the commandPattern regular expression. <br><br>
    *
    * If the number needs to be manipulated before it is replaced in the
-   * hueState, a mapping function can be used to map from the number in the
-   * command to the number in the hueState.
-   * e.g. mapping = n => n * 255 / 100 | 0
+   * lightState, a mapping function can be used to map from the number in the
+   * command to the number in the lightState. <br>
+   * e.g. mapping = n => n * 255 / 100 | 0 <br>
    * would convert a percentage to a byte range before it is used in the
-   * hueState
+   * lightState
    *
    * @param {RegExp} commandPattern
-   *        A pattern that describes the command to be matched
-   * @param {lightState} hueState
-   *        The state to be sent to the Hue Bridge
+   *        A pattern that describes the command to be matched.
+   * @param {lightState} lightState
+   *        The light state to be sent to the Hue Bridge, with the string '$1'
+   *        replacing any numbers in the light state that require mapping.
    * @param {function} [mapping = n => n]
-   *        A function that maps a capture group from the command onto another
-   *        value to be used in the hueState
+   *        A function that maps a capture group from the command pattern onto
+   *        a numerical value to be used in the lightState. Note, Hue
+   *        requires integer values, so be careful with division.
    */
-  constructor(commandPattern, hueState, mapping = n => n) {
+  constructor(commandPattern, lightState, mapping = n => n) {
     this.commandPattern = commandPattern
 
-    if (typeof hueState === 'string')
-      this.hueState = hueState
+    if (typeof lightState === 'string')
+      this.lightState = lightState
     else
-      this.hueState = JSON.stringify(hueState)
+      this.lightState = JSON.stringify(lightState)
 
     this.mapping = mapping
   }
 
   /**
+   * Callback function for when a HueCommand matches an input string, with the
+   * commanded light state as an argument.
+   * @callback commandMatchCallback
+   * @param {lightState} lightState
+   *        The light state object output by the command.
+   */
+
+  /**
    * Checks an input string against this command's commandPattern.
-   * If it matches, a new Hue State will be sent to the Hue Bridge and room
+   * If it matches, a new light state will be sent to the Hue Bridge and room
    * specified
    * @param   {string} str
    *          Input string to be scanned for this command
-   * @param   {Hue} hue
-   *          An instance of the Hue class to be controlled
-   * @param   {number|string} roomNo
-   *          Room identifier number
-   * @param   {successCallback} callback
-   *          Callback run after the Hue lights are successfully set
-   * @param   {errorCallback} errorCallback
-   *          Callback to handle errors when communicating with Hue
+   * @param   {commandMatchCallback} callback
+   *          Callback run when the input string matches the command pattern
+   *          with the output light state as an argument.
    * @returns {string?}
-   *          Returns the string of JSON formatted data sent to control the
-   *          Hue Bridge, or null if the command pattern did not match.
+   *          Returns the light state string the command should output, or null
+   *          if the command pattern did not match.
+   *
+   * @example
+   * let hue = new Hue( ... )                        // Hue interface class
+   * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
+   * let commandTextFromUser = 'lights 50%'          // Some input to be tested
+   *
+   * hueCommand.matchAndRun(commandTextFromUser, lightState => {
+   *   hue.setAllLights(lightState)
+   * })
    */
-  matchAndRun(str, hue, roomNo, callback, errorCallback) {
+  matchAndRun(str, callback) {
     let matches = str.match(this.commandPattern)
 
     if (matches) {
       console.log(this.commandPattern)
 
-      let hueState = this.hueState.replace(
+      let commandedLightState = JSON.parse(this.lightState.replace(
         /"\$(\d+)"/g, (_, $n) =>
         this.mapping(parseInt(matches[$n]))
-      )
+      ))
 
-      hue.setRoom(roomNo, hueState, callback, errorCallback)
+      if (typeof callback === 'function')
+        callback(commandedLightState)
 
-      console.log(hueState)
-      return hueState
+      console.log(commandedLightState)
+      return commandedLightState
     }
     return null
   }
@@ -128,15 +150,16 @@ class HueCommand {
 }
 
 
+
 /*
 // Here is an old version that does not require a class to be constructed
-function hueCommand(str, commandPattern, hueState, mapping = n => n) {
+function hueCommand(str, commandPattern, lightState, mapping = n => n) {
   let matches = str.match(commandPattern)
 
   if (matches) {
     console.log(commandPattern)
 
-    let hueStr = JSON.stringify(hueState).replace(/"\$(\d+)"/g, (_, $n) =>
+    let hueStr = JSON.stringify(lightState).replace(/"\$(\d+)"/g, (_, $n) =>
       mapping(parseInt(matches[parseInt($n)]))
     )
 
