@@ -7,6 +7,14 @@ let roomNo = '1'
 // Just use the preset commands, but you could add your own
 const hueCommands = HueCommand.presets
 
+// Typing commands instead of speech
+document.getElementById('typing').onchange = function (e) {
+  for (let command of hueCommands)
+    command.matchAndRun(e.currentTarget.value, hue, roomNo)
+
+  e.currentTarget.value = ''
+}
+
 // SpeechRecognition API is new so has vendor prefixes currently and may not be supported
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
