@@ -17,3 +17,13 @@ The Hue class only work best when served over HTTP. Hopefully, it is possible to
 Currently, you must manually specify a developer ID to access your Hue bridge. This can be obtained by following [this guide](https://www.developers.meethue.com/documentation/getting-started), but this process will soon be automated (well, mostly, you would still need to hit the button on the Hue Bridge).
 
 Browsers. Just use Chrome.
+
+### Updating the documentation
+
+Documentation is automatically generated from specially marked up comments in the sourcecode using JSDoc.
+
+`npm install -g jsdoc`
+
+Run JSDoc for all files in the source folder.
+
+`jsdoc ./src -d ./docs --verbose`
