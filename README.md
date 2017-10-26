@@ -19,9 +19,9 @@ The Hue class will only work when served over HTTP.
 - When trying to request content over HTTP from a website served over HTTPS, a Mixed Content security error occurs.
 - The project is available through GitHub Pages [here](https://fsyth.github.io/hue-voice/docs/), but this service only allows serving over HTTPS.
 - You can temporarily allow Mixed Content on a page by clicking this button on your browser bar:
- - <img src="https-workaround.png" width="182">
- - Should be perfectly safe, since it requests only the Hue Bridge on your local network over HTTP.
- - Not much I can do about it.
+  - <img src="https-workaround.png" width="182">
+  - Should be perfectly safe, since it requests only the Hue Bridge on your local network over HTTP.
+  - Not much I can do about it.
 
 Browsers.
 - The Web Speech API is an experimental technology. You can check browser compatibility [here](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API#Browser_compatibility).
