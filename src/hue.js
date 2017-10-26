@@ -258,15 +258,21 @@ class Hue {
    * @example
    * // Example error callback to notify the user to press the Link Button on
    * // the Hue Bridge.
-   * function onCreateIdError(errors) {
+   * function onError(errors) {
    *   // Check that type of error is Link Button error
    *   if (errors[0].error.type === 101) {
    *     alert('Please press the Link Button on the Hue Bridge,\n' +
    *           'then click OK to continue.')
    *   }
+   *
+   *   // Handle other types of error too
+   *   ...
    * }
    *
-   * hue.createId(null, onCreateIdError)
+   * // Default behaviour is to automatically retry once the user has clicked
+   * // OK in the alert dialogue (use false for third argument to disable).
+   * hue.createId(onSuccess, onError)
+   *
    */
   createId(callback, errorCallback, retryForLinkButton = true) {
     const xhr = new XMLHttpRequest()
