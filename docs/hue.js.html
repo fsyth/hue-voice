@@ -241,6 +241,7 @@ class Hue {
    */
   findIp(callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = 'https://www.meethue.com/api/nupnp'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -254,7 +255,16 @@ class Hue {
         callback(this.ip)
     })
 
-    xhr.open('GET', 'https://www.meethue.com/api/nupnp')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -269,17 +279,73 @@ class Hue {
    * Begins process to obtain a developer id to allow access to the Hue Bridge
    * over the local network. This requires physical access to the Hue Bridge as
    * the button on it must be pressed at the appropriate time
-   * @param {idCallback} callback
+   * @param {idCallback} [callback]
    *        Callback run once the ID has been obtained.
+   * @param {errorCallback} [errorCallback]
+   *        Callback to handle errors. This will often be called with an error
+   *        requesting the Link Button on the Hue Bridge to be pressed.
+   *        Using window.alert is recommended to notify the user to press the
+   *        Link Button as it blocks further script execution until the user
+   *        presses the button and acknowledges the alert.
+   * @param {boolean} [retryForLinkButton = true]
+   *        Toggles whether requests should be repeatedly sent to the Hue
+   *        Bridge until the user presses the Link Button, or not. True by
+   *        default. Set to false if you will manually call createId again once
+   *        the user has pressed the Link Button
+   *
+   * @example
+   * // Example error callback to notify the user to press the Link Button on
+   * // the Hue Bridge.
+   * function onError(errors) {
+   *   // Check that type of error is Link Button error
+   *   if (errors[0].error.type === 101) {
+   *     alert('Please press the Link Button on the Hue Bridge,\n' +
+   *           'then click OK to continue.')
+   *   }
+   *
+   *   // Handle other types of error too
+   *   ...
+   * }
+   *
+   * // Default behaviour is to automatically retry once the user has clicked
+   * // OK in the alert dialogue (use false for third argument to disable).
+   * hue.createId(onSuccess, onError)
+   *
    */
-  createId(callback) {
-    // GET from ip
-    this.id = 'obviously not implemented yet'
+  createId(callback, errorCallback, retryForLinkButton = true) {
+    const xhr = new XMLHttpRequest()
+    const url = `http://${this.ip}/api`
 
-    if (typeof callback === 'function')
-      callback(this.id)
+    xhr.addEventListener('load', e => {
+      let data = this.parseResponse(e)
 
-    throw 'createId_NotYetImplemented'
+      // Error asking Link Button to be pressed is expected.
+      if (this.detectErrors(data, errorCallback)) {
+        if (data[0].error.type === 101) {
+          // Retry in a second if error was link button.
+          setTimeout(this.createId.bind(this), 1e3, callback, errorCallback)
+        }
+
+        return
+      }
+
+      this.id = data[0].success.username
+
+      if (typeof callback === 'function')
+        callback(this.id)
+    })
+
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('POST', url)
+    xhr.send(JSON.stringify({devicetype: `hue-voice#${navigator.platform}`}))
   }
 
 
@@ -315,6 +381,7 @@ class Hue {
    */
   findAll(callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = `http://${this.ip}/api/${this.id}`
 
     xhr.addEventListener('load', e => {
       let network = this.parseResponse(e)
@@ -349,7 +416,16 @@ class Hue {
         callback(network)
     })
 
-    xhr.open('GET', `http://${this.ip}/api/${this.id}`)
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -399,6 +475,7 @@ class Hue {
    */
   getLight(lightNo, callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = this.getLightUrl(lightNo)
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -410,7 +487,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('GET', this.getLightUrl(lightNo))
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -453,6 +539,7 @@ class Hue {
     }
 
     const xhr = new XMLHttpRequest()
+    const url = this.getLightUrl(lightNo) + '/state'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -464,7 +551,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('PUT', this.getLightUrl(lightNo) + '/state')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('PUT', url)
     xhr.send(state)
   }
 
@@ -509,6 +605,7 @@ class Hue {
    */
   getRoom(roomNo, callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = this.getRoomUrl(roomNo)
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -520,7 +617,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('GET', this.getRoomUrl(roomNo))
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -542,6 +648,7 @@ class Hue {
     }
 
     const xhr = new XMLHttpRequest()
+    const url = this.getRoomUrl(roomNo) + '/action'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -553,7 +660,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('PUT', this.getRoomUrl(roomNo) + '/action')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('PUT', url)
     xhr.send(state)
   }
 
@@ -660,7 +776,7 @@ class Hue {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 11:28:55 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 16:37:48 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

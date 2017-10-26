@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <title>Hue Speech</title>
-    <style>body { font-family: sans-serif }</style>
+    <style>
+      body { font-family: sans-serif; }
+      .note { font-size: 70%; color: #777; }
+    </style>
   </head>
   <body>
     <h1>Hue Voice Control</h1>
@@ -23,7 +26,11 @@
     <p>No mic? Type commands here: <input id="typing" type="text"></p>
     <br>
     <p>Debug messages: <span id="debug">...</span></p>
-    <p>Hue Developer ID: <input id="devId" type="text"></p>
+    <p>
+      Hue Developer ID: <input id="devId" type="text"><br>
+      <span class="note">Set to blank to acquire an ID -
+        you will need to press the link button on the Hue Bridge to allow access</span>
+    </p>
     <script src="hue.js"></script>
     <script src="hue-command.js"></script>
     <script src="main.js"></script>

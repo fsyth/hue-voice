@@ -4,14 +4,14 @@
 // succesful or not
 const debugMessage = document.getElementById('debug')
 
-function onSuccess(e) {
+function onSuccess(successes) {
   fadeFrom('#080')
   debugMessage.innerText = 'success'
 }
 
-function onError(e) {
+function onError(errors) {
   fadeFrom('#F00')
-  debugMessage.innerText = e[0].error.description
+  debugMessage.innerText = errors[0].error.description
 }
 
 function fadeFrom(color) {
@@ -31,6 +31,19 @@ const hue = new Hue({ id: '4vy12cW4AIfRfeTgm8Gr6TBOhY1oVsNBoAW4aMnO' },
                     onSuccess, onError)
 let roomNo = '1'
 
+// Error callback to notify the user to press the Link Button on
+// the when setting up the Hue Bridge with a new ID.
+function onSetupError(errors) {
+  // Check that type of error is Link Button error
+  if (errors[0].error.type === 101)
+    alert('Please press the Link Button on the Hue Bridge,\n' +
+          'then click OK to continue.')
+  else
+    alert(errors[0].error.description)
+
+  onError(errors)
+}
+
 // Allow Hue developer ID to be changed from a text input without needing to go
 // into the console
 const devIdInput = document.getElementById('devId')
@@ -38,7 +51,7 @@ devIdInput.value = hue.id
 devIdInput.onchange = e => {
   hue.reset()
   hue.id = devIdInput.value
-  hue.setup(onSuccess, onError)
+  hue.setup(onSuccess, onSetupError)
 }
 
 
