@@ -11,20 +11,20 @@ See the [documentation](https://fsyth.github.io/hue-voice/docs/) for help with u
 
 A basic example webpage that voice controls Hue has been provided. Serve the `src` folder on your local network over HTTP to test it.
 
-The project is also hosted through GitHub Pages [here](https://fsyth.github.io/hue-voice/docs/), but you will need to allow Mixed Content for it to work (see issue below).
+The project is also hosted through [GitHub Pages here](https://fsyth.github.io/hue-voice/src/), but you will need to allow Mixed Content for it to work (see issue below).
 
 ### Current Issues
 The Hue class will only work when served over HTTP.
 - This is because the Hue Bridge itself acts like a web server on your local network and does not accept HTTPS requests.
 - When trying to request content over HTTP from a website served over HTTPS, a Mixed Content security error occurs.
-- The project is available through GitHub Pages [here](https://fsyth.github.io/hue-voice/docs/), but this service only allows serving over HTTPS.
+- The project is available through GitHub Pages [here](https://fsyth.github.io/hue-voice/src/), but this service only allows serving over HTTPS.
 - You can temporarily allow Mixed Content on a page by clicking this button on your browser bar:
-  - <img src="https-workaround.png" width="182">
+  - <img src="https-workaround.png" width="273">
   - Should be perfectly safe, since it requests only the Hue Bridge on your local network over HTTP.
   - Not much I can do about it.
 
 Browsers.
-- The Web Speech API is an experimental technology. You can check browser compatibility [here](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API#Browser_compatibility).
+- The Web Speech API is an experimental technology. You can check [browser compatibility here](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API#Browser_compatibility).
 - Just use Chrome or Firefox. Stop using Internet Explorer. And update your browser too.
 
 ### Updating the documentation
