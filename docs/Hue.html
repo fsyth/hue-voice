@@ -300,7 +300,7 @@ new Hue({id: '...'}, hueIsReady, handleErrors)</code></pre>
 
 
 
-    <h4 class="name" id="createId"><span class="type-signature"></span>createId<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createId"><span class="type-signature"></span>createId<span class="signature">(callback<span class="signature-attributes">opt</span>, errorCallback<span class="signature-attributes">opt</span>, retryForLinkButton<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
 
@@ -334,7 +334,11 @@ the button on it must be pressed at the appropriate time
         <th>Type</th>
 
 
+        <th>Attributes</th>
 
+
+
+        <th>Default</th>
 
 
         <th class="last">Description</th>
@@ -359,10 +363,107 @@ the button on it must be pressed at the appropriate time
             </td>
 
 
+                <td class="attributes">
 
+                    &lt;optional><br>
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                </td>
 
 
             <td class="description last">Callback run once the ID has been obtained.</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>errorCallback</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type"><a href="global.html#errorCallback">errorCallback</a></span>
+
+
+
+            </td>
+
+
+                <td class="attributes">
+
+                    &lt;optional><br>
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                </td>
+
+
+            <td class="description last">Callback to handle errors. This will often be called with an error
+       requesting the Link Button on the Hue Bridge to be pressed.
+       Using window.alert is recommended to notify the user to press the
+       Link Button as it blocks further script execution until the user
+       presses the button and acknowledges the alert.</td>
+        </tr>
+
+
+
+        <tr>
+
+                <td class="name"><code>retryForLinkButton</code></td>
+
+
+            <td class="type">
+
+
+<span class="param-type">boolean</span>
+
+
+
+            </td>
+
+
+                <td class="attributes">
+
+                    &lt;optional><br>
+
+
+
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                    true
+
+                </td>
+
+
+            <td class="description last">Toggles whether requests should be repeatedly sent to the Hue
+       Bridge until the user presses the Link Button, or not. True by
+       default. Set to false if you will manually call createId again once
+       the user has pressed the Link Button</td>
         </tr>
 
 
@@ -403,7 +504,7 @@ the button on it must be pressed at the appropriate time
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line247">line 247</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line287">line 287</a>
     </li></ul></dd>
 
 
@@ -428,6 +529,26 @@ the button on it must be pressed at the appropriate time
 
 
 
+
+
+    <h5>Example</h5>
+
+    <pre class="prettyprint"><code>// Example error callback to notify the user to press the Link Button on
+// the Hue Bridge.
+function onError(errors) {
+  // Check that type of error is Link Button error
+  if (errors[0].error.type === 101) {
+    alert('Please press the Link Button on the Hue Bridge,\n' +
+          'then click OK to continue.')
+  }
+
+  // Handle other types of error too
+  ...
+}
+
+// Default behaviour is to automatically retry once the user has clicked
+// OK in the alert dialogue (use false for third argument to disable).
+hue.createId(onSuccess, onError)</code></pre>
 
 
 
@@ -788,7 +909,7 @@ rooms.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line288">line 288</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line354">line 354</a>
     </li></ul></dd>
 
 
@@ -1127,7 +1248,7 @@ a UPnP server.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line540">line 540</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line656">line 656</a>
     </li></ul></dd>
 
 
@@ -1285,7 +1406,7 @@ a UPnP server.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line570">line 570</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line686">line 686</a>
     </li></ul></dd>
 
 
@@ -1469,7 +1590,7 @@ a UPnP server.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line372">line 372</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line448">line 448</a>
     </li></ul></dd>
 
 
@@ -1608,7 +1729,7 @@ Append '/state' for PUT requests.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line601">line 601</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line717">line 717</a>
     </li></ul></dd>
 
 
@@ -1814,7 +1935,7 @@ Append '/state' for PUT requests.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line482">line 482</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line578">line 578</a>
     </li></ul></dd>
 
 
@@ -1953,7 +2074,7 @@ Append '/action' for PUT requests.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line614">line 614</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line730">line 730</a>
     </li></ul></dd>
 
 
@@ -2413,7 +2534,7 @@ again starting from scratch.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line556">line 556</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line672">line 672</a>
     </li></ul></dd>
 
 
@@ -2594,7 +2715,7 @@ again starting from scratch.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line586">line 586</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line702">line 702</a>
     </li></ul></dd>
 
 
@@ -2801,7 +2922,7 @@ again starting from scratch.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line422">line 422</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line508">line 508</a>
     </li></ul></dd>
 
 
@@ -3008,7 +3129,7 @@ again starting from scratch.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line511">line 511</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line617">line 617</a>
     </li></ul></dd>
 
 
@@ -3282,7 +3403,7 @@ obtain a new ID, and the lights and room sdo not need to be found again.
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line263">line 263</a>
+        <a href="hue.js.html">hue.js</a>, <a href="hue.js.html#line329">line 329</a>
     </li></ul></dd>
 
 
@@ -3332,7 +3453,7 @@ obtain a new ID, and the lights and room sdo not need to be found again.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 11:28:55 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 16:37:48 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
