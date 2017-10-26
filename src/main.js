@@ -27,7 +27,8 @@ function fadeFrom(color) {
 
 // Hue class for interfacing with Philips Hue
 // Provide your own Hue parameters here, or use the devId input to set later
-const hue = new Hue({ id: '4vy12cW4AIfRfeTgm8Gr6TBOhY1oVsNBoAW4aMnO' }, onSuccess, onError)
+const hue = new Hue({ id: '4vy12cW4AIfRfeTgm8Gr6TBOhY1oVsNBoAW4aMnO' },
+                    onSuccess, onError)
 let roomNo = '1'
 
 // Allow Hue developer ID to be changed from a text input without needing to go
@@ -63,8 +64,10 @@ typingInput.onchange = e => {
 
 
 // Use the Web Speech API to get plain english commands from the user.
-// SpeechRecognition is new so has vendor prefixes currently and may not be supported
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+// SpeechRecognition is new so has vendor prefixes currently and may not be
+// supported
+const SpeechRecognition = window.SpeechRecognition ||
+                          window.webkitSpeechRecognition
 
 if (!SpeechRecognition)
   alert('Your browser does not support the Web Speech API.\n' +
