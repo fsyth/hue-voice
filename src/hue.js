@@ -241,17 +241,57 @@ class Hue {
    * Begins process to obtain a developer id to allow access to the Hue Bridge
    * over the local network. This requires physical access to the Hue Bridge as
    * the button on it must be pressed at the appropriate time
-   * @param {idCallback} callback
+   * @param {idCallback} [callback]
    *        Callback run once the ID has been obtained.
+   * @param {errorCallback} [errorCallback]
+   *        Callback to handle errors. This will often be called with an error
+   *        requesting the Link Button on the Hue Bridge to be pressed.
+   *        Using window.alert is recommended to notify the user to press the
+   *        Link Button as it blocks further script execution until the user
+   *        presses the button and acknowledges the alert.
+   * @param {boolean} [retryForLinkButton = true]
+   *        Toggles whether requests should be repeatedly sent to the Hue
+   *        Bridge until the user presses the Link Button, or not. True by
+   *        default. Set to false if you will manually call createId again once
+   *        the user has pressed the Link Button
+   *
+   * @example
+   * // Example error callback to notify the user to press the Link Button on
+   * // the Hue Bridge.
+   * function onCreateIdError(errors) {
+   *   // Check that type of error is Link Button error
+   *   if (errors[0].error.type === 101) {
+   *     alert('Please press the Link Button on the Hue Bridge,\n' +
+   *           'then click OK to continue.')
+   *   }
+   * }
+   *
+   * hue.createId(null, onCreateIdError)
    */
-  createId(callback) {
-    // GET from ip
-    this.id = 'obviously not implemented yet'
+  createId(callback, errorCallback, retryForLinkButton = true) {
+    const xhr = new XMLHttpRequest()
 
-    if (typeof callback === 'function')
-      callback(this.id)
+    xhr.addEventListener('load', e => {
+      let data = this.parseResponse(e)
 
-    throw 'createId_NotYetImplemented'
+      // Error asking Link Button to be pressed is expected.
+      if (this.detectErrors(data, errorCallback)) {
+        if (data[0].error.type === 101) {
+          // Retry in a second if error was link button.
+          setTimeout(this.createId.bind(this), 1e3, callback, errorCallback)
+        }
+
+        return
+      }
+
+      this.id = data[0].success.username
+
+      if (typeof callback === 'function')
+        callback(this.id)
+    })
+
+    xhr.open('POST', `http://${this.ip}/api`)
+    xhr.send(JSON.stringify({devicetype: `hue-voice#${navigator.platform}`}))
   }
 
 
