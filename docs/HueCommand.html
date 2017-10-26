@@ -30,7 +30,10 @@
 
         <h2><span class="attribs"><span class="type-signature"></span></span>HueCommand<span class="signature">(commandPattern, lightState, mapping<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
 
-            <div class="class-description">HueCommandClass for interpreting voice commands as light states and relaying this to theHue Bridge. <br>© James Forsyth, 2017</div>
+            <div class="class-description">HueCommand
+Class for interpreting voice commands as light states and relaying this to the
+Hue Bridge. <br>
+© James Forsyth, 2017</div>
 
 
 </header>
@@ -53,7 +56,21 @@
 
 
 <div class="description">
-    Commands are created from a regular expression pattern to test stringsagainst. If an input string matches the pattern, the command will beexecuted. <br><br>The commands will output a light state based on the command. The hue stateto be output might depend on numbers in the command. In this case, thelight state should contain the string '$1' where the number correspondswith a capture group in the commandPattern regular expression. <br><br>If the number needs to be manipulated before it is replaced in thelightState, a mapping function can be used to map from the number in thecommand to the number in the lightState. <br>e.g. mapping = n => n * 255 / 100 | 0 <br>would convert a percentage to a byte range before it is used in thelightState
+    Commands are created from a regular expression pattern to test strings
+against. If an input string matches the pattern, the command will be
+executed. <br><br>
+
+The commands will output a light state based on the command. The hue state
+to be output might depend on numbers in the command. In this case, the
+light state should contain the string '$1' where the number corresponds
+with a capture group in the commandPattern regular expression. <br><br>
+
+If the number needs to be manipulated before it is replaced in the
+lightState, a mapping function can be used to map from the number in the
+command to the number in the lightState. <br>
+e.g. mapping = n => n * 255 / 100 | 0 <br>
+would convert a percentage to a byte range before it is used in the
+lightState
 </div>
 
 
@@ -156,7 +173,8 @@
                 </td>
 
 
-            <td class="description last">The light state to be sent to the Hue Bridge, with the string '$1'       replacing any numbers in the light state that require mapping.</td>
+            <td class="description last">The light state to be sent to the Hue Bridge, with the string '$1'
+       replacing any numbers in the light state that require mapping.</td>
         </tr>
 
 
@@ -195,7 +213,9 @@
                 </td>
 
 
-            <td class="description last">A function that maps a capture group from the command pattern onto       a numerical value to be used in the lightState. Note, Hue       requires integer values, so be careful with division.</td>
+            <td class="description last">A function that maps a capture group from the command pattern onto
+       a numerical value to be used in the lightState. Note, Hue
+       requires integer values, so be careful with division.</td>
         </tr>
 
 
@@ -236,7 +256,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line14">line 14</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line15">line 15</a>
     </li></ul></dd>
 
 
@@ -265,7 +285,12 @@
 
     <h5>Example</h5>
 
-    <pre class="prettyprint"><code>Example that maps percentage brightness to a byte value:new HueCommand(  /lights? (\d+)%$/i,        // Match 'lights 50%', etc.  { bri:  '$1' },            // Output light state with '$1' placeholder.  n => n * 255 / 100 | 0     // Scale from 0:100 to 0:255, rounding down.)</code></pre>
+    <pre class="prettyprint"><code>// Example that maps percentage brightness to a byte value:
+new HueCommand(
+  /lights? (\d+)%$/i,        // Match 'lights 50%', etc.
+  { bri:  '$1' },            // Output light state with '$1' placeholder.
+  n => n * 255 / 100 | 0     // Scale from 0:100 to 0:255, rounding down.
+)</code></pre>
 
 
 
@@ -295,7 +320,12 @@
 
 
 <div class="description">
-    Returns an array of useful preset commands for setting brightness,saturation, hue, colour temperature and on/off.The commands all begin with 'light' or 'lights' to distinguish them fromregular speaking.All of the command patterns use an end of string anchor so that only themost recent command in a string will be run.
+    Returns an array of useful preset commands for setting brightness,
+saturation, hue, colour temperature and on/off.
+The commands all begin with 'light' or 'lights' to distinguish them from
+regular speaking.
+All of the command patterns use an end of string anchor so that only the
+most recent command in a string will be run.
 </div>
 
 
@@ -333,7 +363,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line113">line 113</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line114">line 114</a>
     </li></ul></dd>
 
 
@@ -395,7 +425,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line147">line 147</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line148">line 148</a>
     </li></ul></dd>
 
 
@@ -431,7 +461,9 @@
 
 
 <div class="description">
-    Checks an input string against this command's commandPattern.If it matches, a new light state will be sent to the Hue Bridge and roomspecified
+    Checks an input string against this command's commandPattern.
+If it matches, a new light state will be sent to the Hue Bridge and room
+specified
 </div>
 
 
@@ -506,7 +538,8 @@
 
 
 
-            <td class="description last">Callback run when the input string matches the command pattern         with the output light state as an argument.</td>
+            <td class="description last">Callback run when the input string matches the command pattern
+         with the output light state as an argument.</td>
         </tr>
 
 
@@ -547,7 +580,7 @@
 
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line83">line 83</a>
+        <a href="hue-command.js.html">hue-command.js</a>, <a href="hue-command.js.html#line84">line 84</a>
     </li></ul></dd>
 
 
@@ -574,7 +607,8 @@
 
 
 <div class="param-desc">
-    Returns the light state string the command should output, or null         if the command pattern did not match.
+    Returns the light state string the command should output, or null
+         if the command pattern did not match.
 </div>
 
 
@@ -598,7 +632,13 @@
 
     <h5>Example</h5>
 
-    <pre class="prettyprint"><code>let hue = new Hue( ... )                        // Hue interface classlet hueCommand = new HueCommand( ... )          // Constructed HueCommandlet commandTextFromUser = 'lights 50%'          // Some input to be testedhueCommand.matchAndRun(commandTextFromUser, lightState => {  hue.setAllLights(lightState)})</code></pre>
+    <pre class="prettyprint"><code>let commandTextFromUser = 'lights 50%'          // Some input to be tested
+let hueCommand = new HueCommand( ... )          // Constructed HueCommand
+let hue = new Hue( ... )                        // Hue interface class
+
+hueCommand.matchAndRun(commandTextFromUser, lightState => {
+  hue.setAllLights(lightState)
+})</code></pre>
 
 
 
@@ -624,7 +664,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 25 2017 23:38:01 GMT+0100 (GMT Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 01:51:26 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

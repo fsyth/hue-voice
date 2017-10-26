@@ -88,12 +88,12 @@ speechRec.onresult = e => {
 }
 
 // Stop when speech ends to clear old transcript
-speechRec.onspeechend = () => {
+speechRec.onspeechend = e => {
   speechRec.stop()
 }
 
 // Start again on ending for continuous speech recognition
-speechRec.onend = () => {
+speechRec.onend = e => {
   speechRec.start()
 }
 

@@ -30,7 +30,9 @@
 
         <h2><span class="attribs"><span class="type-signature"></span></span>Hue<span class="signature">(settings<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>, errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
 
-            <div class="class-description">HueClass for interfacing with Philips Hue Lights. <br>© James Forsyth, 2017</div>
+            <div class="class-description">Hue
+Class for interfacing with Philips Hue Lights. <br>
+© James Forsyth, 2017</div>
 
 
 </header>
@@ -53,7 +55,10 @@
 
 
 <div class="description">
-    Optionally provide settings to preset the Hue connection parameters.Use callbacks to wait until the connection has been established with theHue Bridge or to handle errors that occurred when finding the Hue BridgeIP address, obtaining a developer ID, or finding all rooms  and lights.
+    Optionally provide settings to preset the Hue connection parameters.
+Use callbacks to wait until the connection has been established with the
+Hue Bridge or to handle errors that occurred when finding the Hue Bridge
+IP address, obtaining a developer ID, or finding all rooms  and lights.
 </div>
 
 
@@ -117,7 +122,8 @@
 
 
 
-            <td class="description last">An optional object with settings to initialise ip, id and lights to       control.</td>
+            <td class="description last">An optional object with settings to initialise ip, id and lights to
+       control.</td>
         </tr>
 
 
@@ -150,7 +156,8 @@
 
 
 
-            <td class="description last">A callback run once the connection has been established with the       Hue bridge.</td>
+            <td class="description last">A callback run once the connection has been established with the
+       Hue bridge.</td>
         </tr>
 
 
@@ -286,7 +293,9 @@
 
 
 <div class="description">
-    Begins process to obtain a developer id to allow access to the Hue Bridgeover the local network. This requires physical access to the Hue Bridge asthe button on it must be pressed at the appropriate time
+    Begins process to obtain a developer id to allow access to the Hue Bridge
+over the local network. This requires physical access to the Hue Bridge as
+the button on it must be pressed at the appropriate time
 </div>
 
 
@@ -421,7 +430,11 @@
 
 
 <div class="description">
-    Checks the parsed data or ProgressEvent from an XMLHttpRequest.If the data describes an error response, it is logged to the console andthe errorCallback is called. <br>Returns true if an error was detected so that calling functions can bestopped early.
+    Checks the parsed data or ProgressEvent from an XMLHttpRequest.
+If the data describes an error response, it is logged to the console and
+the errorCallback is called. <br>
+Returns true if an error was detected so that calling functions can be
+stopped early.
 </div>
 
 
@@ -621,7 +634,8 @@
 
 
 <div class="description">
-    Gets information from the Hue Bridge on its entire network of lights androoms.
+    Gets information from the Hue Bridge on its entire network of lights and
+rooms.
 </div>
 
 
@@ -801,7 +815,8 @@
 
 
 <div class="description">
-    Finds the internal IP address of the Hue Bridge on the local network viaa UPnP server.
+    Finds the internal IP address of the Hue Bridge on the local network via
+a UPnP server.
 </div>
 
 
@@ -1481,7 +1496,8 @@
 
 
 <div class="description">
-    Constructs the URL of a given light.Append '/state' for PUT requests.
+    Constructs the URL of a given light.
+Append '/state' for PUT requests.
 </div>
 
 
@@ -1825,7 +1841,8 @@
 
 
 <div class="description">
-    Constructs the URL of a given room for GET requests.Append '/action' for PUT requests.
+    Constructs the URL of a given room for GET requests.
+Append '/action' for PUT requests.
 </div>
 
 
@@ -1985,7 +2002,8 @@
 
 
 <div class="description">
-    Takes the ProgressEvent of an XMLHttpRequest response handler and parsesthe response text into an object
+    Takes the ProgressEvent of an XMLHttpRequest response handler and parses
+the response text into an object
 </div>
 
 
@@ -2154,7 +2172,8 @@
 
 
 <div class="description">
-    Removes anything set up by the constructor, allowing setup to be calledagain starting from scratch.
+    Removes anything set up by the constructor, allowing setup to be called
+again starting from scratch.
 </div>
 
 
@@ -3016,7 +3035,12 @@
 
 
 <div class="description">
-    Queues up tasks to find missing parameters. This automatically handles theorder of the sequence, which is important since you need IP to get ID toget All. <br>If any of these are already known, these stages are skipped. <br>Finally, calls the callback (if any) that was passed in once everythingis set up.
+    Queues up tasks to find missing parameters. This automatically handles the
+order of the sequence, which is important since you need IP to get ID to
+get All. <br>
+If any of these are already known, these stages are skipped. <br>
+Finally, calls the callback (if any) that was passed in once everything
+is set up.
 </div>
 
 
@@ -3080,7 +3104,8 @@
 
 
 
-            <td class="description last">A callback run once the connection has been established with the       Hue bridge.</td>
+            <td class="description last">A callback run once the connection has been established with the
+       Hue bridge.</td>
         </tr>
 
 
@@ -3196,7 +3221,9 @@
 
 
 <div class="description">
-    Stores Hue parameters in local storage so that IP does not need to belooked up and the button on the bridge does not need to be pressed toobtain a new ID, and the lights and room sdo not need to be found again.
+    Stores Hue parameters in local storage so that IP does not need to be
+looked up and the button on the bridge does not need to be pressed to
+obtain a new ID, and the lights and room sdo not need to be found again.
 </div>
 
 
@@ -3290,7 +3317,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 25 2017 23:38:01 GMT+0100 (GMT Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 01:51:26 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

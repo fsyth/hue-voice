@@ -4,7 +4,8 @@
  * Hue Bridge. <br>
  * © James Forsyth, 2017
  *
- * @example Example that maps percentage brightness to a byte value:
+ * @example
+ * // Example that maps percentage brightness to a byte value:
  * new HueCommand(
  *   /lights? (\d+)%$/i,        // Match 'lights 50%', etc.
  *   { bri:  '$1' },            // Output light state with '$1' placeholder.
@@ -72,9 +73,9 @@ class HueCommand {
    *          if the command pattern did not match.
    *
    * @example
-   * let hue = new Hue( ... )                        // Hue interface class
-   * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
    * let commandTextFromUser = 'lights 50%'          // Some input to be tested
+   * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
+   * let hue = new Hue( ... )                        // Hue interface class
    *
    * hueCommand.matchAndRun(commandTextFromUser, lightState => {
    *   hue.setAllLights(lightState)
