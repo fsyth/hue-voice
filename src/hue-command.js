@@ -61,16 +61,26 @@ class HueCommand {
 
   /**
    * Checks an input string against this command's commandPattern.
-   * If it matches, a new light state will be sent to the Hue Bridge and room
-   * specified
+   * If it matches, a callback will be run with the light state, which is useful
+   * when iterating over many commands.
+   * The light state is also returned if there is a match, which is simpler for
+   * individual commands.
    * @param   {string} str
    *          Input string to be scanned for this command
-   * @param   {commandMatchCallback} callback
+   * @param   {commandMatchCallback} [callback]
    *          Callback run when the input string matches the command pattern
    *          with the output light state as an argument.
    * @returns {string?}
    *          Returns the light state string the command should output, or null
    *          if the command pattern did not match.
+   *
+   * @example
+   * let commandTextFromUser = 'lights 50%'          // Some input to be tested
+   * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
+   * let hue = new Hue( ... )                        // Hue interface class
+   *
+   * let lightState = hueCommand.matchAndRun(commandTextFromUser)
+   * hue.setAllLights(lightState)
    *
    * @example
    * let commandTextFromUser = 'lights 50%'          // Some input to be tested
