@@ -213,6 +213,7 @@ class Hue {
    */
   findIp(callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = 'https://www.meethue.com/api/nupnp'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -226,7 +227,16 @@ class Hue {
         callback(this.ip)
     })
 
-    xhr.open('GET', 'https://www.meethue.com/api/nupnp')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -276,6 +286,7 @@ class Hue {
    */
   createId(callback, errorCallback, retryForLinkButton = true) {
     const xhr = new XMLHttpRequest()
+    const url = `http://${this.ip}/api`
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -296,7 +307,16 @@ class Hue {
         callback(this.id)
     })
 
-    xhr.open('POST', `http://${this.ip}/api`)
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('POST', url)
     xhr.send(JSON.stringify({devicetype: `hue-voice#${navigator.platform}`}))
   }
 
@@ -333,6 +353,7 @@ class Hue {
    */
   findAll(callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = `http://${this.ip}/api/${this.id}`
 
     xhr.addEventListener('load', e => {
       let network = this.parseResponse(e)
@@ -367,7 +388,16 @@ class Hue {
         callback(network)
     })
 
-    xhr.open('GET', `http://${this.ip}/api/${this.id}`)
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -417,6 +447,7 @@ class Hue {
    */
   getLight(lightNo, callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = this.getLightUrl(lightNo)
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -428,7 +459,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('GET', this.getLightUrl(lightNo))
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -471,6 +511,7 @@ class Hue {
     }
 
     const xhr = new XMLHttpRequest()
+    const url = this.getLightUrl(lightNo) + '/state'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -482,7 +523,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('PUT', this.getLightUrl(lightNo) + '/state')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('PUT', url)
     xhr.send(state)
   }
 
@@ -527,6 +577,7 @@ class Hue {
    */
   getRoom(roomNo, callback, errorCallback) {
     const xhr = new XMLHttpRequest()
+    const url = this.getRoomUrl(roomNo)
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -538,7 +589,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('GET', this.getRoomUrl(roomNo))
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('GET', url)
     xhr.send()
   }
 
@@ -560,6 +620,7 @@ class Hue {
     }
 
     const xhr = new XMLHttpRequest()
+    const url = this.getRoomUrl(roomNo) + '/action'
 
     xhr.addEventListener('load', e => {
       let data = this.parseResponse(e)
@@ -571,7 +632,16 @@ class Hue {
         callback(data)
     })
 
-    xhr.open('PUT', this.getRoomUrl(roomNo) + '/action')
+    xhr.addEventListener('error', e => {
+      if (typeof errorCallback === 'function')
+        errorCallback([{ error: {
+          type: 401,
+          address: url,
+          description: `Could not communicate with ${url}`
+        }}])
+    })
+
+    xhr.open('PUT', url)
     xhr.send(state)
   }
 
