@@ -4,6 +4,19 @@
  * @class Hue
  * Class for interfacing with Philips Hue Lights. <br>
  * © James Forsyth, 2017
+ *
+ * @example
+ * function hueIsReady(hue) {
+ *   // code goes here, e.g.
+ *   hue.setAllLights({on:true}, console.log, console.error)
+ * }
+ *
+ * function handleErrors(error) {
+ *   // code goes here, e.g.
+ *   console.error(error.description)
+ * }
+ *
+ * new Hue({id: '...'}, hueIsReady, handleErrors)
  */
 class Hue {
   /**
@@ -47,19 +60,6 @@ class Hue {
    *        Hue bridge.
    * @param {errorCallback} [errorCallback]
    *        A callback to handle errors
-   *
-   * @example
-   * function hueIsReady(hue) {
-   *   // code goes here, e.g.
-   *   hue.setAllLights({on:true}, console.log, console.error)
-   * }
-   *
-   * function handleErrors(error) {
-   *   // code goes here, e.g.
-   *   console.error(error.description)
-   * }
-   *
-   * new Hue({id: '...'}, hueIsReady, handleErrors)
    */
   constructor(settings, callback, errorCallback) {
     let stored
