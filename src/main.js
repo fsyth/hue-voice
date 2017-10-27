@@ -98,10 +98,16 @@ typingInput.onkeydown = e => {
   else
     return
 
+  // Retrieve command
   if (historyIndex === 0)
     typingInput.value = ''
   else
     typingInput.value = commandHistory[commandHistory.length - historyIndex]
+
+  // Set cursor to end of line
+  let cursor = typingInput.value.length;
+  typingInput.setSelectionRange(cursor, cursor)
+  e.preventDefault()
 }
 
 
