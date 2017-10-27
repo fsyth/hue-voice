@@ -75,14 +75,17 @@ class HueCommand {
    *          if the command pattern did not match.
    *
    * @example
+   * // Using the value that is returned - be careful, it could be null
    * let commandTextFromUser = 'lights 50%'          // Some input to be tested
    * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
    * let hue = new Hue( ... )                        // Hue interface class
    *
    * let lightState = hueCommand.matchAndRun(commandTextFromUser)
-   * hue.setAllLights(lightState)
+   * if (lightState !== null)
+   *   hue.setAllLights(lightState)
    *
    * @example
+   * // Using the callback - no need to check for null
    * let commandTextFromUser = 'lights 50%'          // Some input to be tested
    * let hueCommand = new HueCommand( ... )          // Constructed HueCommand
    * let hue = new Hue( ... )                        // Hue interface class
