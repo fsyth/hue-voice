@@ -7,6 +7,7 @@ const debugMessage = document.getElementById('debug')
 function onSuccess(successes) {
   fadeFrom('#080')
   debugMessage.innerText = 'success'
+  devIdInput.value = hue.id
 }
 
 function onError(errors) {
@@ -46,7 +47,6 @@ function onSetupError(errors) {
 // Allow Hue developer ID to be changed from a text input without needing to go
 // into the console
 const devIdInput = document.getElementById('devId')
-devIdInput.value = hue.id
 devIdInput.onchange = e => {
   hue.reset()
   hue.id = devIdInput.value
