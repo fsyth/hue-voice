@@ -52,9 +52,12 @@ class Hue {
    * Hue Bridge or to handle errors that occurred when finding the Hue Bridge
    * IP address, obtaining a developer ID, or finding all rooms  and lights.
    *
-   * @param {hueSettings}   [settings]
-   *        An optional object with settings to initialise ip, id and lights to
-   *        control.
+   * @param {hueSettings} [settings]
+   *        An optional object with settings to override IP and ID.
+   *        If no setting for ID is provided, ID will be retrieved from local
+   *        storage. If it is not present, the Link Button on the Hue Bridge
+   *        must be pressed to acquire an ID, as described in the error
+   *        callback error description.
    * @param {hueCallback} [callback]
    *        A callback run once the connection has been established with the
    *        Hue bridge.
@@ -62,14 +65,10 @@ class Hue {
    *        A callback to handle errors
    */
   constructor(settings, callback, errorCallback) {
-    let stored
-    let storedString = window.localStorage.getItem('hue')
+    let storedId = window.localStorage.getItem('hueId')
 
-    if (storedString)
-      stored = JSON.parse(storedString)
-
-    this.ip = (settings && settings.ip) || (stored && stored.ip)
-    this.id = (settings && settings.id) || (stored && stored.id)
+    this.ip = (settings && settings.ip) || null
+    this.id = (settings && settings.id) || storedId || null
 
     this.setup(callback, errorCallback)
   }
@@ -80,13 +79,15 @@ class Hue {
    * order of the sequence, which is important since you need IP to get ID to
    * get All. <br>
    * If any of these are already known, these stages are skipped. <br>
+   * Next, the Hue ID, which is now validated from succesful FindAll, is stored
+   * locally. <br>
    * Finally, calls the callback (if any) that was passed in once everything
    * is set up.
    * @param {hueCallback} [callback]
    *        A callback run once the connection has been established with the
    *        Hue bridge.
    * @param {errorCallback} [errorCallback]
-   *        A callback to handle errors
+   *        A callback to handle errors at any stage.
    */
   setup(callback, errorCallback) {
     const setupQueue = []
@@ -97,11 +98,15 @@ class Hue {
     if (!this.id)
       setupQueue.push(this.createId.bind(this))
 
-    if (!this.lights)
-      setupQueue.push(this.findAll.bind(this))
+    setupQueue.push(this.findAll.bind(this))
+
+    setupQueue.push((next, ecb) => {
+      this.storeSettingsLocally()
+      next()
+    })
 
     if (typeof callback === 'function') {
-      setupQueue.push(next => {
+      setupQueue.push((next, ecb) => {
         callback(this)
         next()
       })
@@ -121,6 +126,8 @@ class Hue {
   /**
    * Removes anything set up by the constructor, allowing setup to be called
    * again starting from scratch.
+   * Also, breaks out of any recursively looping processes, such as awaiting
+   * for link button to be pressed.
    */
   reset() {
     this.ip = null
@@ -128,6 +135,7 @@ class Hue {
     this.lights = null
     this.rooms = null
     this.network = null
+    clearTimeout(this.linkButtonTimeout)
   }
 
 
@@ -250,7 +258,11 @@ class Hue {
   /**
    * Begins process to obtain a developer id to allow access to the Hue Bridge
    * over the local network. This requires physical access to the Hue Bridge as
-   * the button on it must be pressed at the appropriate time
+   * the Link Button on it must be pressed at the appropriate time. <br>
+   * It is recommended to call hue.storeSettingsLocally afterwards to store the
+   * created ID locally so that it is not necessary to redo this process when
+   * revisiting or refreshing the page. The method hue.setup will do this
+   * automatically.
    * @param {idCallback} [callback]
    *        Callback run once the ID has been obtained.
    * @param {errorCallback} [errorCallback]
@@ -295,7 +307,8 @@ class Hue {
       if (this.detectErrors(data, errorCallback)) {
         if (data[0].error.type === 101) {
           // Retry in a second if error was link button.
-          setTimeout(this.createId.bind(this), 1e3, callback, errorCallback)
+          this.linkButtonTimeout =
+            setTimeout(this.createId.bind(this), 1e3, callback, errorCallback)
         }
 
         return
@@ -322,12 +335,20 @@ class Hue {
 
 
   /**
-   * Stores Hue parameters in local storage so that IP does not need to be
-   * looked up and the button on the bridge does not need to be pressed to
-   * obtain a new ID, and the lights and room sdo not need to be found again.
+   * Stores Hue ID in local storage so that the Link Button on the bridge does
+   * not need to be pressed to obtain a new ID if the webpage is revisited or
+   * refreshed.
    */
   storeSettingsLocally() {
-    window.localStorage.setItem(JSON.stringify(this))
+    window.localStorage.setItem('hueId', this.id)
+  }
+
+
+  /**
+   * Deletes stored settings, including stored ID.
+   */
+  clearStoredSettings() {
+    window.localStorage.clear()
   }
 
 
