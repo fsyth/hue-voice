@@ -65,13 +65,44 @@ function setLightState(lightState) {
   hue.setRoom(roomNo, lightState, onSuccess, onError)
 }
 
+// Keep a stack of previous commands so the user can traverse back through them
+// using the arrow keys
+const commandHistory = []
+let historyIndex = 0
+
 // Allow commands to be typed instead of spoken if desired using a text input.
 const typingInput = document.getElementById('typing')
+
 typingInput.onchange = e => {
+  if (typingInput === '')
+    return
+
+  commandHistory.push(typingInput.value)
+  historyIndex = 0
+
   for (let command of hueCommands)
     command.matchAndRun(typingInput.value, setLightState)
 
   typingInput.value = ''
+}
+
+typingInput.onkeydown = e => {
+  if (e.keyCode === 38 && historyIndex < commandHistory.length)
+    // Up arrow
+    historyIndex++
+  else if (e.keyCode === 40 && historyIndex > 0)
+    // Down arrow
+    historyIndex--
+  else if (e.keyCode === 13)
+    // Enter key
+    typingInput.onchange()
+  else
+    return
+
+  if (historyIndex === 0)
+    typingInput.value = ''
+  else
+    typingInput.value = commandHistory[commandHistory.length - historyIndex]
 }
 
 
@@ -98,6 +129,9 @@ speechRec.onresult = e => {
   // and check it against the list of commands to control Hue.
 
   document.getElementById('speech').innerText = speech
+
+  commandHistory.push(speech)
+  historyIndex = 0
 
   for (let command of hueCommands)
     command.matchAndRun(speech, setLightState)
