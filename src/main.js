@@ -27,8 +27,7 @@ function fadeFrom(color) {
 
 // Hue class for interfacing with Philips Hue
 // Provide your own Hue parameters here, or use the devId input to set later
-const hue = new Hue({ id: '4vy12cW4AIfRfeTgm8Gr6TBOhY1oVsNBoAW4aMnO' },
-                    onSuccess, onError)
+const hue = new Hue(null, onSuccess, onError)
 let roomNo = '1'
 
 // Error callback to notify the user to press the Link Button on
