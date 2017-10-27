@@ -148,7 +148,9 @@ class HueCommand {
       new HueCommand(/lights? purple$/i,                  { hue: 49151, sat: 255 }),
       new HueCommand(/lights? magenta$/i,                 { hue: 54612, sat: 255 }),
       new HueCommand(/lights? on$/i,                      { on:   true }),
-      new HueCommand(/lights? off$/i,                     { on:  false })
+      new HueCommand(/lights? off$/i,                     { on:  false }),
+      new HueCommand(/lights? loop/i,                     { effect: 'colorloop' }),
+      new HueCommand(/lights? stop/i,                     { effect: 'none' })
     ]
   }
 
