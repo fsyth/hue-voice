@@ -1,0 +1,19 @@
+body {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  border-bottom: 1px solid #EEE;
+}
+
+.content {
+  background-color: #FFF;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.note {
+  color: #777;
+  font-size: 70%;
+}
+
