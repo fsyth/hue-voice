@@ -17,7 +17,7 @@ The project is also hosted through [GitHub Pages here](https://fsyth.github.io/h
 ##### The Hue class will only work when served over HTTP
 - This is because the Hue Bridge itself acts like a web server on your local network and does not accept HTTPS requests.
 - When trying to request content over HTTP from a website served over HTTPS, a Mixed Content security error occurs.
-- The project is available through GitHub Pages [here](https://fsyth.github.io/hue-voice/src/), but this service only allows serving over HTTPS.
+- The project is available through [GitHub Pages here](https://fsyth.github.io/hue-voice/src/), but this service only allows serving over HTTPS.
 - You can temporarily allow Mixed Content on a page by clicking this button on your browser bar:
   - <img src="https-workaround.png" width="273">
   - This should be perfectly safe, since only the Hue Bridge on your local network is requested over HTTP, nothing else.

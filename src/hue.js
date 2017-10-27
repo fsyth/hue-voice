@@ -67,8 +67,8 @@ class Hue {
   constructor(settings, callback, errorCallback) {
     let storedId = window.localStorage.getItem('hueId')
 
-    this.ip = (settings && settings.ip) || null
-    this.id = (settings && settings.id) || storedId || null
+    this.ip = settings && settings.ip
+    this.id = settings && settings.id || storedId
 
     this.setup(callback, errorCallback)
   }
@@ -113,10 +113,8 @@ class Hue {
     }
 
     const processNextInQueue = () => {
-      if (setupQueue.length > 0) {
-        let stage = setupQueue.shift()
-        stage(processNextInQueue, errorCallback)
-      }
+      if (setupQueue.length > 0)
+        setupQueue.shift()(processNextInQueue, errorCallback)
     }
 
     processNextInQueue()
