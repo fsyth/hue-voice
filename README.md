@@ -1,7 +1,7 @@
 # Hue Voice
 #### Voice control for Philips Hue in the Web Browser
 
-This repository contains a class, Hue, that interfaces with Philips Hue lights from a web browser.
+This [repository](https://github.com/fsyth/hue-voice) contains a class, Hue, that interfaces with Philips Hue lights from a web browser.
 
 It also contains a class, HueCommand, that translates voice commands into state objects for use with Hue.
 
