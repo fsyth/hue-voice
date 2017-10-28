@@ -232,7 +232,7 @@ class Hue {
           errorCallback([{ error: {
             type: 404,
             address: url,
-            description: `No Hue Bridge found on local network`
+            description: 'No Hue Bridge found on local network'
           }}])
         }
         return
