@@ -227,6 +227,17 @@ class Hue {
       if (this.detectErrors(data, errorCallback))
         return
 
+      if (data.length === 0) {
+        if (typeof errorCallback === 'function') {
+          errorCallback([{ error: {
+            type: 404,
+            address: url,
+            description: 'No Hue Bridge found on local network'
+          }}])
+        }
+        return
+      }
+
       this.ip = data[0].internalipaddress
 
       if (typeof callback === 'function')
