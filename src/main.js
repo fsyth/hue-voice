@@ -7,7 +7,6 @@ const debugMessage = document.getElementById('debug')
 function onSuccess(successes) {
   fadeFrom('#080')
   debugMessage.innerText = 'success'
-  devIdInput.value = hue.id
 }
 
 function onError(errors) {
@@ -28,8 +27,37 @@ function fadeFrom(color) {
 
 // Hue class for interfacing with Philips Hue
 // Provide your own Hue parameters here, or use the devId input to set later
-const hue = new Hue(null, onSuccess, onError)
-let roomNo = '1'
+const hue = new Hue(null, onHueConnection, onError)
+const devIdInput = document.getElementById('devId')
+const roomSelectionInput = document.getElementById('room-selection')
+let roomNo
+
+function onHueConnection(hue) {
+  devIdInput.value = hue.id
+
+  for (let room of hue.rooms) {
+    let option = document.createElement('option')
+    option.text = room.name
+    option.value = room.roomNo
+    roomSelectionInput.add(option)
+  }
+
+  roomSelectionInput.onchange()
+
+  onSuccess()
+}
+
+roomSelectionInput.onchange = e => {
+  roomNo = roomSelectionInput.value
+}
+
+// Allow Hue developer ID to be changed from a text input without needing to go
+// into the console
+devIdInput.onchange = e => {
+  hue.reset()
+  hue.id = devIdInput.value
+  hue.setup(onHueConnection, onSetupError)
+}
 
 // Error callback to notify the user to press the Link Button on
 // the when setting up the Hue Bridge with a new ID.
@@ -42,15 +70,6 @@ function onSetupError(errors) {
     alert(errors[0].error.description)
 
   onError(errors)
-}
-
-// Allow Hue developer ID to be changed from a text input without needing to go
-// into the console
-const devIdInput = document.getElementById('devId')
-devIdInput.onchange = e => {
-  hue.reset()
-  hue.id = devIdInput.value
-  hue.setup(onSuccess, onSetupError)
 }
 
 
