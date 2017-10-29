@@ -100,10 +100,7 @@ class Hue {
 
     setupQueue.push(this.findAll.bind(this))
 
-    setupQueue.push((next, ecb) => {
-      this.storeSettingsLocally()
-      next()
-    })
+    setupQueue.push(this.storeSettingsLocally.bind(this))
 
     if (typeof callback === 'function') {
       setupQueue.push((next, ecb) => {
@@ -346,18 +343,40 @@ class Hue {
   /**
    * Stores Hue ID in local storage so that the Link Button on the bridge does
    * not need to be pressed to obtain a new ID if the webpage is revisited or
-   * refreshed.
+   * refreshed. <br>
+   * For a webpage environment, the storage is synchronous, but for other
+   * environments such as Chrome apps, storage is asynchronous. Therefore a
+   * callback can be passed in to continue after changes have been stored
+   * regardless of the environment.
+   * @param {function} callback
+   *        A callback called once Hue parameters have been stored.
+   * @param {errorCallback} errorCallback
+   *        A callback to handle errors.
    */
-  storeSettingsLocally() {
+  storeSettingsLocally(callback, errorCallback) {
     window.localStorage.setItem('hueId', this.id)
+
+    if (typeof callback === 'function')
+      callback()
   }
 
 
   /**
-   * Deletes stored settings, including stored ID.
+   * Deletes the stored stored Hue ID. <br>
+   * For a webpage environment, the storage is synchronous, but for other
+   * environments such as Chrome apps, storage is asynchronous. Therefore a
+   * callback can be passed in to continue after changes have been stored
+   * regardless of the environment.
+   * @param {function} callback
+   *        A callback called once Hue parameters have been stored.
+   * @param {errorCallback} errorCallback
+   *        A callback to handle errors.
    */
-  clearStoredSettings() {
-    window.localStorage.clear()
+  clearStoredSettings(callback, errorCallback) {
+    window.localStorage.removeItem('hueId')
+
+    if (typeof callback === 'function')
+      callback()
   }
 
 
