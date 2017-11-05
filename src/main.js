@@ -99,7 +99,7 @@ typingInput.onchange = e => {
   historyIndex = 0
 
   for (let command of hueCommands)
-    command.matchAndRun(typingInput.value, setLightState)
+    command.matchAndRun('lights ' + typingInput.value, setLightState)
 
   typingInput.value = ''
 }
