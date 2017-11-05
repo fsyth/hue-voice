@@ -168,8 +168,24 @@ speechRec.onspeechend = e => {
 
 // Start again on ending for continuous speech recognition
 speechRec.onend = e => {
-  speechRec.start()
+  if (recording)
+    speechRec.start()
 }
 
 speechRec.start()
 
+
+
+let recording = true
+const toggleRecordingButton = document.getElementById('toggle-recording')
+toggleRecordingButton.addEventListener('click', e => {
+  if (recording) {
+    recording = false
+    toggleRecordingButton.innerText = 'Start Recording'
+    speechRec.stop()
+  } else {
+    recording = true
+    toggleRecordingButton.innerText = 'Stop Recording'
+    speechRec.start()
+  }
+})
