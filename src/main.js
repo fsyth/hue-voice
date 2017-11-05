@@ -141,10 +141,18 @@ if (!SpeechRecognition)
   alert('Your browser does not support the Web Speech API.\n' +
         'Please try again using an up to date version of Chrome.')
 
+let recording = false
+const toggleRecordingButton = document.getElementById('toggle-recording')
+
 const speechRec = new SpeechRecognition()
 speechRec.lang = navigator.language || 'en-US'
 speechRec.continuous = false
 speechRec.interimResults = false
+
+speechRec.onstart = e => {
+  recording = true
+  toggleRecordingButton.innerText = 'Stop Recording'
+}
 
 speechRec.onresult = e => {
   let speech = e.results[0][0].transcript
@@ -172,20 +180,14 @@ speechRec.onend = e => {
     speechRec.start()
 }
 
-speechRec.start()
-
-
-
-let recording = true
-const toggleRecordingButton = document.getElementById('toggle-recording')
-toggleRecordingButton.addEventListener('click', e => {
+toggleRecordingButton.onclick = e => {
   if (recording) {
     recording = false
     toggleRecordingButton.innerText = 'Start Recording'
     speechRec.stop()
   } else {
-    recording = true
-    toggleRecordingButton.innerText = 'Stop Recording'
     speechRec.start()
   }
-})
+}
+
+speechRec.start()
